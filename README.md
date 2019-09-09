@@ -10,9 +10,16 @@ Started September 9th, 2019
 https://github.com/hpssjellis/IOTA-node-particle-photon-M2M-server
 
 
-and the other the client machine at 
+and the other the client machine at (this github!)
 
 https://github.com/hpssjellis/IOTA-node-particle-photon-M2M-client
+
+load gitpod of the client by
+
+https://gitpod.io#github.com/hpssjellis/IOTA-node-particle-photon-M2M-client
+
+
+
 
 
 
