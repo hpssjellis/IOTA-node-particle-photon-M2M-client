@@ -15,6 +15,7 @@ const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'
 
 
 
+
 global.myRecieveIndex = 0    // defines when to start showing the replies! Careful will not show results if above latest recive address
 
 
@@ -274,6 +275,10 @@ function callback(error, response, body) {
         console.log('myAmount');
         console.log(myAmount);
 
+        let myMessageToSendMain = global.myReceiveAddress
+
+/* from old program
+
 
          let myMessageToSendMain = 'From Rocksetta: The Photoresistor reads: '+ myAmount
 
@@ -288,7 +293,12 @@ function callback(error, response, body) {
            // console.log(myMessageToSendMain)
 
           //const myDone = mySendMessage(mySendToAddressMain, myMessageToSendMain)
-           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a rely
+
+*/
+
+
+
+           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a reply
 
 
     }
@@ -462,7 +472,35 @@ app.get('/', function(req, res) {
 
 
 
+
+
+
+
+
+
+
 });   // end app.get
+
+
+     let myInt =  setInterval( function() {
+       console.log('Hello every 5 minutes = 300,000 seconds')
+       global.myNotStartup = true      // so some special things can happen, check this incoming and generate new seed
+       let myIncoming = global.myReceiveAddress
+       if (myIncoming.length == 90){
+          // console.log(myIncoming)
+           myIncoming = myIncoming.substring(0, 81)
+          // console.log(myIncoming)
+       }
+       //.substring(0, myBig.length - 1);
+       if (global.myLatestAddress != myIncoming){
+        mySendConfirmed(myIncoming)
+       } else {
+          console.log('Already checked that confirmed address')
+       }
+
+          console.log('Done checking')
+
+     }, 300000 );
 
 
 
