@@ -14,8 +14,8 @@ const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'    // n
 
 
 global.mySpecialReceiveAddress = '' // Only on client this needs to be set before running program
-global.myValueToSend = 3    // IOTA to send each 5 min
-global.myIntervalToSend = 300000     // 300000 = 5 min 5 x 60 x 1000
+global.myValueToSend = 2    // IOTA to send each 5 min
+global.myIntervalToSend = 120000     // 300000 = 5 min 5 x 60 x 1000
 
 
 global.myRecieveIndex = 0    // defines when to start showing the replies! Careful will not show results if above latest recive address
@@ -112,7 +112,7 @@ iota
   .getNewAddress(myPassedSeed, options)
   .then(myGenAddress => {
       global.myReceiveAddress = myGenAddress   // need a refresh from browser side to see this?
-      console.log('Generating new receive address')
+      console.log('Generating new receive address 1')
       console.log('global.myReceiveAddress')
       console.log(global.myReceiveAddress)
   })
@@ -224,7 +224,8 @@ function mySendConfirmed(myRAddress){
 
       // needs an even number input!
      myMessage = Converter.trytesToAscii(myBig)
-
+    // console.log('myMessage')
+    // console.log(myMessage)
 
      // Get rid of bad words
    //  myMessage = myMessage.replace(/Bad-Word/gi, '****');
@@ -233,10 +234,10 @@ function mySendConfirmed(myRAddress){
       // myMessage =     myMessage.substring(0, 5) + '...'   // only show first 5 digits of message
 
 
-       if (response[myStateLoop].value == 0){
-           myMessage = ' '
+     //  if (response[myStateLoop].value == 0){
+       //    myMessage = ' '
 
-           }
+      //    }
           if (response[myStateLoop].value >= 0){
 
 
@@ -333,6 +334,11 @@ function callback(error, response, body) {
         const myAmount = JSON.parse(body).return_value
         console.log('myAmount');
         console.log(myAmount);
+
+
+
+
+
 
 
 
@@ -574,7 +580,7 @@ if (global.myNotStartup == false){
 
 
      let myInt =  setInterval( function() {
-       console.log('Hello every 5 minutes = 300,000 seconds')
+       console.log('Hello every 2 minutes = 120,000 seconds')
        global.myNotStartup = true      // so some special things can happen, check this incoming and generate new address
        let myIncoming = global.myReceiveAddress
        if (myIncoming.length == 90){
@@ -584,11 +590,11 @@ if (global.myNotStartup == false){
            console.log(myIncoming)
        }
        //.substring(0, myBig.length - 1);
-       if (global.myLatestAddress != myIncoming){
+     //  if (global.myLatestAddress != myIncoming){
         mySendConfirmed(myIncoming)
-       } else {
-          console.log('Already checked that confirmed address')
-       }
+      // } else {
+       //   console.log('Already checked that confirmed address')
+     //  }
 
           console.log('Done checking')
 
