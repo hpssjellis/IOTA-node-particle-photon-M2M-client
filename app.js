@@ -12,7 +12,6 @@ const mySeed = 'DONOTSTOREYOURSEEDONAPUBLICGITHUBSITEASANYONECANSTEALALLYOUR9IOT
 const myParticleId = '888888888888888888888888'    // not relevant on client
 const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'    // not relevant on client
 
-
 global.myReceiveAddress = '' // Only on client this needs to be set before running program
 global.myValueToSend = 3    // IOTA to send each 5 min
 global.myIntervalToSend = 300000     // 300000 = 5 min 5 x 60 x 1000
@@ -224,32 +223,37 @@ function mySendConfirmed(myRAddress){
 
        // console.log('myMessage')
        // console.log(myMessage)
-           
-		  
-		  
+
+
+
 	// sensor response
-		  
-	 myTempResponse += '<td>No sensor data from client</td>'	  
-	/*	  
+
+
+	/*
        if (response[myStateLoop].value == 0  ){                          myTempResponse += '<td>You gotta pay to read a sensor!</td>'  }
        if (response[myStateLoop].value >= 1  && response[myStateLoop].value <= 10  ){          myParticleSend('doAll', 'toggleLED', myMessage);          myTempResponse += '<td>Toggles the D7 LED</td>'  }
        if (response[myStateLoop].value >  10 ){                                              myParticleSend('doAll', 'photoResistor', myMessage);      myTempResponse += '<td>photoresistor reading sent</td>'  }
 
-	*/	  
-		  
-	
-	   let myMessageToSendMain = global.myReceiveAddress
+	*/
 
 
-           mySendMessage(myMessage, myMessageToSendMain)                         	  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
+if (response[myStateLoop].value == 0  ){
+   myTempResponse += '<td>No sensor data from client </td>'
+       if (global.myNotStartup){
+           let myMessageToSendMain = global.myReceiveAddress
+           mySendMessage(myMessage, myMessageToSendMain)
+       }
+} else {myTempResponse += '<td>Other info! </td>'}
+
+
+
+
+
+
+
+
+
+
 
        myTempResponse += '<td>'+response[myStateLoop].address.substring(0, 5)+'...</td>'
        myTempResponse += '<td>'+myMessage.substring(0, 5)+'...</td>'
@@ -297,7 +301,15 @@ function callback(error, response, body) {
         console.log('myAmount');
         console.log(myAmount);
 
+
+
+
         let myMessageToSendMain = global.myReceiveAddress
+        mySendMessage(mySendToAddressMain, myMessageToSendMain)
+
+
+
+
 
 /* from old program
 
@@ -320,7 +332,6 @@ function callback(error, response, body) {
 
 
 
-           mySendMessage(mySendToAddressMain, myMessageToSendMain)                          // send a 0 value message as a reply
 
 
     }
@@ -500,26 +511,27 @@ app.get('/', function(req, res) {
 
 
 
-
 });   // end app.get
 
 
+
+
 if (global.myNotStartup == false){
-       let myIncoming = global.myReceiveAddress
-       if (myIncoming.length == 90){
+       global.myNotStartup = true
+       let myIncoming2 = global.myReceiveAddress
+       if (myIncoming2.length == 90){
           // console.log(myIncoming)
-           myIncoming = myIncoming.substring(0, 81)
+           myIncoming = myIncoming2.substring(0, 81)
           // console.log(myIncoming)
        }
        //.substring(0, myBig.length - 1);
-       if (global.myLatestAddress != myIncoming){
-        mySendConfirmed(myIncoming)
-       } else {
-          console.log('Already checked that confirmed address')
-       }
-    
-    }
+      // if (global.myLatestAddress != myIncoming2){
+        mySendConfirmed(myIncoming2)
+      // } else {
+       //   console.log('Already checked that confirmed address')
+      // }
 
+    }
 
 
 
