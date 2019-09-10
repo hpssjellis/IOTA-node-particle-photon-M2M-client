@@ -503,18 +503,7 @@ app.get('/', function(req, res) {
        }
      }
 
-
-
-
-
-
-
-
-
-});   // end app.get
-
-
-
+/*
 
 if (global.myNotStartup == false){
        global.myNotStartup = true
@@ -533,11 +522,23 @@ if (global.myNotStartup == false){
 
     }
 
+*/
+
+
+
+
+});   // end app.get
+
+
+
+
+
+
 
 
      let myInt =  setInterval( function() {
        console.log('Hello every 5 minutes = 300,000 seconds')
-       global.myNotStartup = true      // so some special things can happen, check this incoming and generate new seed
+       global.myNotStartup = true      // so some special things can happen, check this incoming and generate new address
        let myIncoming = global.myReceiveAddress
        if (myIncoming.length == 90){
           // console.log(myIncoming)
