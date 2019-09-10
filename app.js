@@ -9,18 +9,19 @@ const Converter = require('@iota/converter')
 const mySeed = 'DONOTSTOREYOURSEEDONAPUBLICGITHUBSITEASANYONECANSTEALALLYOUR9IOTATOKENSKEEPITSAFE'   //Your secret seed. All your tokens
           //   'ABCDEFGHIJKLMNOPQRSTUVWXYZ9ABCDEFGHIJKLMNOPQRSTUVWXYZ9ABCDEFGHIJKLMNOPQRSTUVWXYZ9' // SEED MUST BE THIS LENGTH
 
-const myParticleId = '888888888888888888888888'
-const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'
+const myParticleId = '888888888888888888888888'    // not relevant on client
+const myParticleAccessToken = 'abc88d8888888ef8888ghi8888j88k88l888mnop'    // not relevant on client
 
 
-
+global.myReceiveAddress = '' // Only on client this needs to be set before running program
+global.myValueToSend = 3    // IOTA to send each 5 min
+global.myIntervalToSend = 300000     // 300000 = 5 min 5 x 60 x 1000
 
 
 global.myRecieveIndex = 0    // defines when to start showing the replies! Careful will not show results if above latest recive address
 
 
 
-global.myReceiveAddress = '' // This will be auto generated
 
 global.myArrayOfAddresses = new Array()
 
@@ -223,12 +224,33 @@ function mySendConfirmed(myRAddress){
 
        // console.log('myMessage')
        // console.log(myMessage)
-                                                                                                                  // sensor response
+           
+		  
+		  
+	// sensor response
+		  
+	 myTempResponse += '<td>No sensor data from client</td>'	  
+	/*	  
        if (response[myStateLoop].value == 0  ){                          myTempResponse += '<td>You gotta pay to read a sensor!</td>'  }
        if (response[myStateLoop].value >= 1  && response[myStateLoop].value <= 10  ){          myParticleSend('doAll', 'toggleLED', myMessage);          myTempResponse += '<td>Toggles the D7 LED</td>'  }
-         if (response[myStateLoop].value >  10 ){                                              myParticleSend('doAll', 'photoResistor', myMessage);      myTempResponse += '<td>photoresistor reading sent</td>'  }
+       if (response[myStateLoop].value >  10 ){                                              myParticleSend('doAll', 'photoResistor', myMessage);      myTempResponse += '<td>photoresistor reading sent</td>'  }
 
-//doAll
+	*/	  
+		  
+	
+	   let myMessageToSendMain = global.myReceiveAddress
+
+
+           mySendMessage(myMessage, myMessageToSendMain)                         	  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+
        myTempResponse += '<td>'+response[myStateLoop].address.substring(0, 5)+'...</td>'
        myTempResponse += '<td>'+myMessage.substring(0, 5)+'...</td>'
        myTempResponse += '</tr>'
@@ -322,7 +344,7 @@ function callback(error, response, body) {
 
 async function mySendMessage(mySendToAddress, myMessageToSend){  // uses mySeed to generate a new send address
 
-const myValue = 0
+const myValue = global.myValueToSend   // should be about 3 IOTA
 
 const mySendToAddress2 = mySendToAddress.replace(/[^A-Z9]/g, '');
 //console.log('mySendToAddress2')
@@ -482,6 +504,25 @@ app.get('/', function(req, res) {
 });   // end app.get
 
 
+if (global.myNotStartup == false){
+       let myIncoming = global.myReceiveAddress
+       if (myIncoming.length == 90){
+          // console.log(myIncoming)
+           myIncoming = myIncoming.substring(0, 81)
+          // console.log(myIncoming)
+       }
+       //.substring(0, myBig.length - 1);
+       if (global.myLatestAddress != myIncoming){
+        mySendConfirmed(myIncoming)
+       } else {
+          console.log('Already checked that confirmed address')
+       }
+    
+    }
+
+
+
+
      let myInt =  setInterval( function() {
        console.log('Hello every 5 minutes = 300,000 seconds')
        global.myNotStartup = true      // so some special things can happen, check this incoming and generate new seed
@@ -500,7 +541,11 @@ app.get('/', function(req, res) {
 
           console.log('Done checking')
 
-     }, 300000 );
+     }, global.myIntervalToSend );
+
+
+
+
 
 
 
